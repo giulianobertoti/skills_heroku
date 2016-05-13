@@ -1,0 +1,93 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Login</title>
+	
+    
+	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+	<script src="http://www.chartjs.org/assets/Chart.js"></script>
+	<link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel=stylesheet>
+
+	<script>
+		$(document).ready(function(){
+		
+			alert("oi");
+			var ra = sessionStorage.getItem("ra");
+				
+				if(ra == null){
+				
+					window.location.href = '/index.html';
+				
+				} else {
+				
+					$("#ra").append(ra);
+					
+					//criar 2 ifs para ver se o aluno já terminou e só assim mostrar os resultados e um if para ver se o psicologo ja comentou
+					
+
+					$.getJSON("/competencies/"+ra+"?format=json&jsoncallback=",function(data) {
+					
+						var labels = [];
+						var values = [];
+					
+						$.each(data[0].competencies, function(i){
+						
+							labels.push(this.name);
+							values.push(this.value);
+						});
+					
+					
+						var radarData = {
+							labels : labels,
+							datasets : [{
+								fillColor: "rgba(63,169,245,.1)",
+								strokeColor: "rgba(63,169,245,1)",
+								pointColor : "rgba(151,187,205,1)",
+								pointStrokeColor : "#fff",
+								data : values
+							}]
+						}
+					
+						var ctx2 = document.getElementById("radarChart").getContext("2d");
+						var myNewChart = new Chart(ctx2).Radar(radarData);
+						new Chart(ctx2).Radar(radarData,options);
+					
+					});
+			
+		});
+	</script>
+
+   
+  </head>
+  <body>
+		
+		
+		<nav class="navbar navbar-default">
+        
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li><a href="question.html">Questionário</a></li>
+              <li><a href="profile.html">Perfil</a></li>
+              <li class="active"><a href="studentresults.html">Resultados</a></li>
+              
+            </ul>
+            
+            
+          </div><!--/.nav-collapse -->
+        
+        </nav>
+
+		
+		<div id="context" class="col-md-offset-1">
+			<p>Olá aluno</p>
+			<div id="ra"></div>
+			
+			
+		</div>
+		
+
+		<canvas id="radarChart" width="800" height="650"></canvas>
+	
+  </body>
+</html>

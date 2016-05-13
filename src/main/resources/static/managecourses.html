@@ -1,0 +1,170 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Gerenciamento de Cursos</title>
+	
+    
+	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+	
+	
+	<link href="css/bootstrap.min.css" rel=stylesheet>
+
+	<script>
+		$(document).ready(function(){
+			
+			var userName = sessionStorage.getItem("userNameADM");
+				
+				if(userName == null){
+				
+					window.location.href = '/loginadm.html';
+				
+				} else {
+				
+					$.getJSON("/institutions?format=json&jsoncallback=",function(data) {
+							var itemsInst = [];
+							
+							$.each(data, function(i){
+							
+								
+								
+								itemsInst.push("<option>" + this.institutionName + "</option>");
+								
+							});
+										
+							$("#dataInstitution").append(itemsInst);
+							
+					});
+					
+					$('#dataInstitution').on('change', function(){
+						
+						
+						
+						var selected = $(this).find("option:selected").val();
+						
+						$.getJSON("/courses/"+selected+"?format=json&jsoncallback=",function(data) {
+							var itemsCourse = [];
+							
+							$.each(data, function(i){
+							
+							
+								itemsCourse.push("<tr> <td>" + this.courseName + "</td> <td><button class='btn btn-danger' role='button' onclick='deleteCourse( \""+this.courseName+"\" )'>Deletar</button></td> </tr>");
+								
+							});
+									
+							$("#dataRows").empty();
+									
+							$("#dataRows").append(itemsCourse);
+							
+							
+							
+						});
+						
+						
+					});
+					
+					$('form').submit(function(e){
+			
+						e.preventDefault();
+				
+						var institution = $( "#dataInstitution option:selected" ).text();
+						var newCourse = $('#newCourse').val().trim();
+				
+						$.post("/newcourse?format=json&jsoncallback=", JSON.stringify({'institution': institution, 'course': newCourse}), function(data){
+						
+						
+							if(data[0].status == 1){
+								window.location.href = '/managecourses.html';
+							} else {
+								window.location.href = '/managecourses.html';
+							}
+						
+						
+						}, "json");
+			
+					});
+					
+				}
+				
+				
+				
+				
+				
+		});
+		
+		
+	</script>
+
+   
+    <script>
+		function deleteCourse(course, institution){
+			$.post("/course/delete?format=json&jsoncallback=", JSON.stringify({'course': course, 'institution':institution}), function(data){
+						
+						window.location.href = '/managecourses.html';
+						
+			}, "json");
+		}
+	</script>
+   
+  </head>
+  <body>
+  
+  
+		<nav class="navbar navbar-default navbar-static-top">
+			
+			<div id="navbar" class="navbar-collapse collapse">
+				<ul class="nav navbar-nav">
+					<li><a href="adm.html">Painel de Controle</a></li>
+					<li><a href="createquestion.html">Cadastrar Questão</a></li>
+					<li><a href="managecompetencies.html">Gerenciar Competências</a></li>
+					<li class="active"><a href="managecourses.html">Gerenciar Curso</a></li>
+					<li><a href="">Cadastrar Psicóloga</a></li>
+					<li><a href="">Cadastrar Funcionário</a></li>
+				</ul>
+          
+				
+        
+			</div>
+		</nav>
+		
+		<form role="form" method="post">
+            <div class="form-group col-md-3">
+                <label>FATEC</label>
+                <select id="dataInstitution" class="input-large form-control">
+                    <option value="" selected="selected">Escolha a FATEC</option>
+                    
+                    
+                </select>
+            </div>
+		</form>
+		
+
+		
+		<table class="table table-bordered"> 
+			<caption>Cursos</caption>
+				<thead>
+					<tr> 
+						<th>Nome do Curso</th>
+						<th>Status</th>
+						
+					</tr> 
+				</thead> 
+				
+				<tbody id="dataRows"> 
+					
+				</tbody> 
+		</table>
+		
+		<div class="form-group form-group">
+			<label class="col-md-4 control-label">Insira o nome do novo Curso</label>
+			<div class="col-md-4">
+				<input class="form-control" type="text" id="newCourse" placeholder="">
+			</div>
+			<label class="col-md-4 control-label">ex: Banco de Dados</label>
+		</div>
+		
+		<button id="send" type="submit" class="btn btn-primary col-md-offset-5">Cadastrar Curso</button>
+		
+	
+  </body>
+</html>

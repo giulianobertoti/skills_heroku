@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Login</title>
+	
+    
+	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+	
+	<link href="css/bootstrap.min.css" rel=stylesheet>
+
+	<script>
+		$(document).ready(function(){
+			    
+				var ra = sessionStorage.getItem("ra");
+				
+				if(ra == null){
+				
+					window.location.href = '/index.html';
+				
+				} else {
+				
+					$("#ra").append(ra);
+
+					$.getJSON("/user/"+ra+"?format=json&jsoncallback=",function(data) {
+					
+					
+						var question = data[0].question;
+						
+					
+						parseInt(sessionStorage.setItem("question",data[0].question));
+					
+						$("#questionNumber").append(question);
+					
+					
+						$.getJSON("/questions/"+question+"?format=json&jsoncallback=",function(data) {
+					
+							var title = data[0].question;
+						
+							$("#question").append(title);
+							
+							
+							
+							$("#answer1").append(data[0].answer[0].answer);
+							$("#answer2").append(data[0].answer[1].answer);
+							$("#answer3").append(data[0].answer[2].answer);
+							$("#answer4").append(data[0].answer[3].answer);
+							
+							$("#mediaQuestion").attr("src", data[0].introduction);
+							
+					
+						});
+		
+					});
+				
+				
+				}
+				
+				
+			$("#next").click(function() {
+			
+				var answerCode = $('#answers input:radio:checked').val();
+				
+				var questionNumber = sessionStorage.getItem("question");
+				
+				var ra = sessionStorage.getItem("ra");
+				
+				
+				var url = "/answer/"+ra+"/"+questionNumber+"/"+answerCode+"?format=json&jsoncallback=";
+				
+				
+				
+				$.getJSON(url,function(data) {
+				
+					
+				
+					if(data[0].status=="ok"){
+						window.location.reload();
+					} else {
+						window.location.href = '/thankyou.html';
+					}
+				
+					
+				
+				});
+			
+			});	
+			
+		});
+	</script>
+	
+	
+
+   
+  </head>
+  <body>
+  
+		
+  
+  
+		<div id="context" class="col-md-offset-1">
+			<p>Olá aluno</p>
+			<div id="ra"></div>
+			
+			<p>Questão número</p>
+			<div id="questionNumber"></div>
+			
+		</div>
+  
+		
+		
+		
+		
+		<div id="questionIntroduction" class="col-md-offset-1">
+			<iframe id="mediaQuestion" width="420" height="315" src="" frameborder="0" allowfullscreen></iframe>
+		</div>
+		
+		
+		<div class="col-md-offset-1" id="question"></div>
+		
+		<div id="answers" class="col-md-offset-2">
+		
+			<div class="radio">
+				<label>
+					<input type="radio" name="optionsRadios" id="optionsRadios1" value="1">
+					<p id="answer1"></p>
+				</label>
+			</div>
+			
+			<div class="radio">
+				<label>
+					<input type="radio" name="optionsRadios" id="optionsRadios2" value="2">
+					<p id="answer2"></p>
+				</label>
+			</div>
+		
+			<div class="radio">
+				<label>
+					<input type="radio" name="optionsRadios" id="optionsRadios3" value="3">
+					<p id="answer3"></p>
+				</label>
+			</div>
+			
+			<div class="radio">
+				<label>
+					<input type="radio" name="optionsRadios" id="optionsRadios4" value="4">
+					<p id="answer4"></p>
+				</label>
+			</div>
+		
+		</div>
+		
+		
+		
+		<button id="next" type="submit" class="btn btn-primary col-md-offset-3">Próxima</button>
+			
+		
+	
+  </body>
+</html>

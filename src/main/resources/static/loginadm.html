@@ -1,0 +1,75 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Login Psicóloga</title>
+	
+    
+	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+	
+
+	<link href="css/bootstrap.min.css" rel=stylesheet>
+	
+	
+	<script>
+		$(document).ready(function(){
+			$('form').submit(function(e){    
+				
+				e.preventDefault();
+				
+				var userName = $('#username').val().trim();
+				
+				var password = $('#password').val().trim();
+				
+				
+				$.post("/login/adm", JSON.stringify({'userName': userName, 'password': password}), function(data){
+						
+						
+					if(data[0].status == 0){
+
+						window.location.href = '/loginadm.html';
+						
+					} else {
+					
+						sessionStorage.setItem("userNameADM",data[0].userName);
+
+					
+						window.location.href = '/adm.html';
+					
+					}
+						
+						
+				}, "json");
+				
+			});
+		});
+	</script>
+
+   
+  </head>
+  <body>
+		<br>
+		<br>
+		<form class="form-horizontal" method="post" id="form">
+			<div class="form-group">
+				<label for="inputEmail3" class="col-md-4 control-label">Email</label>
+				<div class="col-md-4">
+					<input required="required" type="email" class="form-control" id="username" placeholder="Email">
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="inputPassword3" class="col-md-4 control-label">Password</label>
+				<div class="col-md-4">
+					<input required="required" type="password" class="form-control" id="password" placeholder="Password">
+				</div>
+			</div>
+			
+			<button id="login" type="submit" class="btn btn-primary col-md-offset-4 col-md-4">Login</button>
+		</form>
+		
+
+		
+
+	
+  </body>
+</html>
