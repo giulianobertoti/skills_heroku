@@ -48,7 +48,7 @@
 							$.each(data, function(i){
 							
 							
-								itemsCourse.push("<tr> <td>" + this.courseName + "</td> <td><button class='btn btn-danger' role='button' onclick='deleteCourse( \""+this.courseName+"\" )'>Deletar</button></td> </tr>");
+								itemsCourse.push("<tr> <td>" + this.courseName + "</td> <td><button class='btn btn-danger' role='button' onclick='deleteCourse( \""+this.courseName+"\",\""+selected+"\" )'>Deletar</button></td> </tr>");
 								
 							});
 									
@@ -155,15 +155,16 @@
 				</tbody> 
 		</table>
 		
-		<div class="form-group form-group">
+		<form class="form-group form-group">
 			<label class="col-md-4 control-label">Insira o nome do novo Curso</label>
 			<div class="col-md-4">
 				<input class="form-control" type="text" id="newCourse" placeholder="">
 			</div>
 			<label class="col-md-4 control-label">ex: Banco de Dados</label>
-		</div>
+			<button id="send" type="submit" class="btn btn-primary col-md-offset-5">Cadastrar Curso</button>
+		</form>
 		
-		<button id="send" type="submit" class="btn btn-primary col-md-offset-5">Cadastrar Curso</button>
+		
 		
 	
   </body>
