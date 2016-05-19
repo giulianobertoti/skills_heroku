@@ -1,0 +1,182 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Assessment Skills - Search RA</title>
+	
+    
+	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+	
+	
+	<link href="css/bootstrap.min.css" rel=stylesheet>
+
+	<script>
+		$(document).ready(function(){
+			
+			var userName = sessionStorage.getItem("userName");
+				
+				if(userName == null){
+				
+					window.location.href = '/loginpsychologist.html';
+				
+				} else {
+				
+					$.getJSON("/institutions?format=json&jsoncallback=",function(data) {
+							var itemsInst = [];
+							
+							$.each(data, function(i){
+							
+								
+								
+								itemsInst.push("<option>" + this.institutionName + "</option>");
+								
+							});
+										
+							$("#dataInstitution").append(itemsInst);
+							
+					});
+					
+					$('#dataInstitution').on('change', function(){
+						
+						
+						
+						var selected = $(this).find("option:selected").val();
+						
+						$.getJSON("/courses/"+selected+"?format=json&jsoncallback=",function(data) {
+							var itemsCourse = [];
+							
+							$.each(data, function(i){
+							
+							
+								itemsCourse.push("<option>" + this.courseName + "</option>");
+								
+							});
+									
+							$("#dataCourse").empty().append('<option>Escolha o Curso</option>');
+									
+							$("#dataCourse").append(itemsCourse);
+							
+							
+							
+						});
+						
+						
+					});
+					
+				}
+				
+				$("#next").click(function() {
+				
+					var selectedInstitution = $( "#dataInstitution option:selected" ).text();
+					var selectedCourse = $( "#dataCourse option:selected" ).text();
+					var selectedYear = $( "#dataYear option:selected" ).text();
+					var selectedPeriod = $( "#dataPeriod option:selected" ).text();
+					
+					$("#dataRows").empty();
+					
+					var url = "/students/"+selectedInstitution+"/"+selectedCourse+"/"+selectedYear+"/"+selectedPeriod+"?format=json&jsoncallback=";
+					
+		
+					$.getJSON(url,function(data) {
+						var items = [];
+						
+						$.each(data, function(i){
+						
+							var status = [];
+						
+							if(this.status == 1){
+								status.push("<p class='text-danger'>O aluno ainda não terminou o questionário</p>");
+							} else if (this.status == 2){
+								status.push("<a class='btn btn-info' role='button' href='/psychologistcomment.html?"+this.ra+"'>Avaliar aluno</a>")
+							} else {
+								status.push("<p class='text-success'>Avaliação do aluno já realizada</p>")
+							}
+							
+							items.push("<tr><td>"+ this.ra +"</td> <td>"+ this.name + "</td> <td>"+ this.username + "</td> <td>"+ status + "</td> </tr>");
+							
+						});
+									
+						$("#dataRows").append(items);
+						
+					});
+				});
+		});
+		
+		
+	</script>
+
+   
+  </head>
+  <body>
+  
+		
+		<form role="form" method="post">
+            <div class="form-group col-md-3">
+                <label>FATEC</label>
+                <select id="dataInstitution" class="input-large form-control">
+                    <option value="" selected="selected">Escolha a FATEC</option>
+                    
+                    
+                </select>
+            </div>
+		</form>
+		
+		<form role="form" method="post">
+            <div class="form-group col-md-3">
+                <label>Curso</label>
+                <select id="dataCourse" class="input-large form-control">
+                    <option value="" selected="selected">Escolha o Curso</option>
+      
+                </select>
+            </div>
+		</form>
+		
+		<form role="form" method="post">
+            <div class="form-group col-md-3">
+                <label>Ano</label>
+                <select id="dataYear" class="input-large form-control">
+                    <option value="" selected="selected">Escolha o ano</option>
+                    <option value="">2016</option>
+                    <option value="">2017</option>
+                    <option value="">2018</option>
+                    
+                </select>
+            </div>
+		</form>
+		
+		<form role="form" method="post">
+            <div class="form-group col-md-3">
+                <label>Periodo</label>
+                <select id="dataPeriod" class="input-large form-control">
+                    <option value="" selected="selected">Escolha o periodo</option>
+                    <option value="">1</option>
+                    <option value="">2</option>
+                    
+                </select>
+            </div>
+		</form>
+		
+		
+		<button id="next" type="submit" class="btn btn-primary col-md-offset-5">Buscar</button>
+		
+		<table class="table table-bordered"> 
+			<caption>Students.</caption>
+				<thead>
+					<tr> 
+						<th>RA</th>
+						<th>Nome</th> 
+						<th>Email</th> 
+						<th>Status</th> 
+					</tr> 
+				</thead> 
+				
+				<tbody id="dataRows"> 
+					
+				</tbody> 
+		</table>
+		
+		
+		
+	
+  </body>
+</html>

@@ -1,17 +1,14 @@
 package hello;
 
 import static spark.Spark.*;
-import spark.ModelAndView;
-import java.util.*;
-import spark.template.mustache.*;
 
 
-import spark.Spark;
+
 
 import java.util.LinkedList;
 import java.util.List;
 
-import org.json.JSONException;
+
 
 public class MainServer {
 
@@ -74,9 +71,9 @@ public class MainServer {
 		model.addInstitution(fatecsjc);
 		model.addInstitution(fatecmarilia);
 		
-		//model.addCompetency(new Competency("resiliencia"));
-		//model.addCompetency(new Competency("esforco"));
-		//model.addCompetency(new Competency("concentracao"));
+		model.addCompetency(new Competency("resiliencia"));
+		model.addCompetency(new Competency("esforco"));
+		model.addCompetency(new Competency("concentracao"));
 		
 		model.addStudent(new Student("joao@gmail.com", "12345", "Joao", 1111, "fatecsjc", "bd" ,2016, 1));
 		model.addStudent(new Student("lilian@gmail.com", "12345", "Lilian", 2222, "fatecsjc", "bd", 2016, 1));

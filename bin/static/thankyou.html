@@ -1,0 +1,84 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Obrigado</title>
+	
+    
+	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+	<script src="http://www.chartjs.org/assets/Chart.js"></script>
+
+	<link href="css/bootstrap.min.css" rel=stylesheet>
+	
+	<script>
+		$(document).ready(function(){
+			
+				
+				
+				var ra = sessionStorage.getItem("ra");
+				
+				
+				
+				$.getJSON("/competencies/"+ra+"?format=json&jsoncallback=",function(data) {
+					
+					var labels = [];
+					var values = [];
+					
+					$.each(data[0].competencies, function(i){
+						
+						labels.push(this.name);
+						values.push(this.value);
+					});
+					
+					
+					var radarData = {
+						labels : labels,
+						datasets : [{
+							fillColor: "rgba(63,169,245,.1)",
+							strokeColor: "rgba(63,169,245,1)",
+							pointColor : "rgba(151,187,205,1)",
+							pointStrokeColor : "#fff",
+							data : values
+						}]
+					}
+					
+					var ctx2 = document.getElementById("radarChart").getContext("2d");
+					var myNewChart = new Chart(ctx2).Radar(radarData);
+					new Chart(ctx2).Radar(radarData,options);
+					
+				});
+				
+				$.getJSON("/user/"+ra+"?format=json&jsoncallback=",function(data) {
+					
+					var status = [];
+					
+					if(data[0].statusComment == false){
+						status.push("<p class='text-danger'>A psicóloga ainda não analisou seu desempenho</p>");
+					} else {
+						status.push("<p class='text-success'>A psicóloga já analisou seu desempenho</p> <br> <p>" +data[0].psychologistComment+ "</p>");
+					}
+					
+					$("#status").append(status);
+					
+				});
+				
+			
+		});
+	</script>
+	
+
+   
+  </head>
+  <body>
+  
+		
+  
+		<p class="col-md-offset-4 col-md-4 text-success">Os resultados da sua avaliação estão no gráfico abaixo</p>
+
+		<canvas class="col-md-offset-2 col-md-8" id="radarChart" width="600" height="600"></canvas>
+
+		<div id="status" class="col-md-offset-4 col-md-4"></div>
+		
+	
+  </body>
+</html>

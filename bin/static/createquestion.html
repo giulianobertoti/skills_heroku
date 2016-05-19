@@ -1,0 +1,242 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Cadastro de Perguntas</title>
+	
+    
+	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+	
+
+	<link href="css/bootstrap.min.css" rel=stylesheet>
+	
+	
+	<script>
+		$(document).ready(function(){
+			
+			$.getJSON("/competencies?format=json&jsoncallback=",function(data) {
+			
+				var itemsCompetencies = [];
+					
+					$.each(data, function(i){
+					
+						
+						
+						itemsCompetencies.push('<input class="col-md-1 form-control" type="text" placeholder="'+this.competency+'"></div>');
+						
+					});
+								
+					$("#competencies1").append(itemsCompetencies);
+					$("#competencies2").append(itemsCompetencies);
+					$("#competencies3").append(itemsCompetencies);
+					$("#competencies4").append(itemsCompetencies);
+			});
+			
+			
+			$("#sendQuestion").click(function() {
+			
+				var question = $('#question').val();
+				var introduction = $('#introduction').val();
+				var introductionMediaType = $('#introductionMediaType input:radio:checked').val();
+				
+				//answer1
+				
+				var answer1text = $('#answer1text').val();
+				
+				var competencies1 = [];
+				
+				$('#competencies1').children('input').each(function () {
+					var name = $(this).attr("placeholder");
+					var value = this.value;
+					competencies1.push({"name": name, "value": value});
+				});
+				
+				var answer1 = {"code":1,"answer":answer1text,"competencies":competencies1};
+				
+				//var str = JSON.stringify(answer1);
+				//alert(str);
+				
+				//answer2
+				
+				var answer2text = $('#answer2text').val();
+				
+				var competencies2 = [];
+				
+				$('#competencies2').children('input').each(function () {
+					var name = $(this).attr("placeholder");
+					var value = this.value;
+					competencies2.push({"name": name, "value": value});
+				});
+				
+				var answer2 = {"code":2,"answer":answer2text,"competencies":competencies2};
+				
+				
+				//answer3
+				
+				var answer3text = $('#answer3text').val();
+				
+				var competencies3 = [];
+				
+				$('#competencies3').children('input').each(function () {
+					var name = $(this).attr("placeholder");
+					var value = this.value;
+					competencies3.push({"name": name, "value": value});
+				});
+				
+				var answer3 = {"code":3,"answer":answer3text,"competencies":competencies3};
+				
+				//answer4
+				
+				var answer4text = $('#answer4text').val();
+				
+				var competencies4 = [];
+				
+				$('#competencies4').children('input').each(function () {
+					var name = $(this).attr("placeholder");
+					var value = this.value;
+					competencies4.push({"name": name, "value": value});
+				});
+				
+				var answer4 = {"code":4,"answer":answer2text,"competencies":competencies4};
+				
+				var url = JSON.stringify({"question":question,"answers":[answer1, answer2, answer3, answer4],"introduction":introduction,"introductionMediaType":introductionMediaType});
+				
+				alert(url);
+				
+				$.post("/question/?format=json&jsoncallback=", url, function(data){
+						
+						
+						if(data[0].status == 1){
+							window.location.href = '/statusquestion.html?success';
+						} else {
+							window.location.href = '/statusquestion.html?error';
+						}
+						
+						
+				}, "json");
+			
+			});
+			
+		});
+	</script>
+
+   
+  </head>
+  <body>
+		
+	<br>
+	<br>
+		
+	<form class="form-horizontal">
+	
+		<!-- Introducao da Pergunta -->
+		<div class="form-group form-group">
+			<label class="col-md-4 control-label">URL do Video ou Audio da Introdução da Pergunta</label>
+			<div class="col-md-4">
+				<input class="form-control" type="text" id="introduction" placeholder="URL do Video ou Audio">
+			</div>
+			<label class="col-md-4 control-label">ex: https://www.youtube.com/embed/5t1FPSvpDko</label>
+		</div>
+		
+		<!-- Tipo de Mídia da Pergunta -->
+		<div class="form-group form-group">
+			<label class="col-md-4 control-label">Selecione o tipo de mídia da Introdução da Pergunta</label>
+			<div id="introductionMediaType" class="col-md-4">
+				<label class="radio-inline">
+					<input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="video"> Video
+				</label>
+				<label class="radio-inline">
+					<input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="audio"> Audio
+				</label>
+			</div>
+			<label class="col-md-4 control-label">ex: Video</label>
+		</div>
+		
+		<!-- Texto da Pergunta -->
+		
+		<div class="form-group form-group">
+			<label class="col-md-4 control-label">Texto da Pergunta</label>
+			<div class="col-md-4">
+				<input class="form-control" type="text" id="question" placeholder="Texto da Pergunta">
+			</div>
+			<label class="col-md-4 control-label">ex: O que você faria?</label>
+		</div>
+		
+		<!-- Resposta 1 -->
+		
+		<div class="form-group form-group">
+			<label class="col-md-4 control-label">Resposta 1</label>
+			<div class="col-md-8">
+				<input class="form-control" type="text" id="answer1text" placeholder="Texto da Resposta 1">
+			</div>
+			<label class="col-md-4 control-label">ex: Eu iria embora</label>
+		</div>
+		
+		<div class="form-group form-group">
+			<label class="col-md-4 control-label">Competências da Resposta 1</label>
+			<div class="col-md-8" id="competencies1">
+				
+			</div>	
+		</div>
+		
+		
+		<!-- Resposta 2 -->
+		
+		<div class="form-group form-group">
+			<label class="col-md-4 control-label">Resposta 2</label>
+			<div class="col-md-4">
+				<input class="form-control" type="text" id="answer2text" placeholder="Texto da Resposta 2">
+			</div>
+			<label class="col-md-4 control-label">ex: Eu iria embora</label>
+		</div>
+		
+		<div class="form-group form-group">
+			<label class="col-md-4 control-label">Competências da Resposta 1</label>
+			<div class="col-md-8" id="competencies2">
+				
+			</div>	
+		</div>
+		
+		<!-- Resposta 3 -->
+		
+		<div class="form-group form-group">
+			<label class="col-md-4 control-label">Resposta 3</label>
+			<div class="col-md-4">
+				<input class="form-control" type="text" id="answer3text" placeholder="Texto da Resposta 3">
+			</div>
+			<label class="col-md-4 control-label">ex: Eu iria embora</label>
+		</div>
+		
+		<div class="form-group form-group">
+			<label class="col-md-4 control-label">Competências da Resposta 3</label>
+			<div class="col-md-8" id="competencies3">
+				
+			</div>	
+		</div>
+		
+		
+		<!-- Resposta 4 -->
+		
+		<div class="form-group form-group">
+			<label class="col-md-4 control-label">Resposta 4</label>
+			<div class="col-md-4">
+				<input class="form-control" type="text" id="answer4text" placeholder="Texto da Resposta 4">
+			</div>
+			<label class="col-md-4 control-label">ex: Eu iria embora</label>
+		</div>
+		
+		<div class="form-group form-group">
+			<label class="col-md-4 control-label">Competências da Resposta 4</label>
+			<div class="col-md-8" id="competencies4">
+				
+			</div>	
+		</div>
+  
+	</form>
+	
+	<button id="sendQuestion" type="submit" class="btn btn-primary col-md-offset-5">Cadastrar Pergunta</button>
+		
+
+	
+  </body>
+</html>

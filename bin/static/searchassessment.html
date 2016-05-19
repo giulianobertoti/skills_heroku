@@ -1,0 +1,64 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Assessment Skills - Search RA</title>
+	
+    <script src="http://www.chartjs.org/assets/Chart.js"></script>
+	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+
+	<script>
+		$(document).ready(function(){
+			$('form').submit(function(e){    
+				e.preventDefault();
+				var query = $('#keyword').val().trim();
+				
+				$.getJSON("/competencies/"+query+"?format=json&jsoncallback=",function(data) {
+					
+					var labels = [];
+					var values = [];
+					
+					$.each(data[0].competencies, function(i){
+						
+						labels.push(this.name);
+						values.push(this.value);
+					});
+					
+					
+					var radarData = {
+						labels : labels,
+						datasets : [{
+							fillColor: "rgba(63,169,245,.1)",
+							strokeColor: "rgba(63,169,245,1)",
+							pointColor : "rgba(151,187,205,1)",
+							pointStrokeColor : "#fff",
+							data : values
+						}]
+					}
+					
+					var ctx2 = document.getElementById("radarChart").getContext("2d");
+					var myNewChart = new Chart(ctx2).Radar(radarData);
+					new Chart(ctx2).Radar(radarData,options);
+					
+				});
+			});
+		});
+	</script>
+
+   
+  </head>
+  <body>
+  
+		<form method="post" id="form">
+          <label for="keyword">RA</label>
+          <div class="input">
+            <input type="text" id="keyword" />
+            <input type="submit" class="btn" value="Buscar Competências por RA" />
+          </div>        
+		</form>
+
+
+		<canvas id="radarChart" width="800" height="650"></canvas>
+	
+  </body>
+</html>
