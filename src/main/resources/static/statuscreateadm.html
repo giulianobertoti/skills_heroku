@@ -1,0 +1,46 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Status do Cadastro</title>
+	
+    
+	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+	
+
+	<link href="css/bootstrap.min.css" rel=stylesheet>
+	
+	
+	<script>
+		$(document).ready(function(){
+			var status = location.search.substring(1);
+			
+			var statusComment = [];
+			
+			if(status == "success"){
+			
+				statusComment.push("<p class='text-success'>Funcionário cadastrado com sucesso!</p>");
+			
+			} else {
+				statusComment.push("<p class='text-danger'>Funcionário já cadastrado! O nome de usuário (email) escolhido já existe</p>");
+			}
+			
+			$("#status").append(statusComment);
+			
+		});
+	</script>
+
+   
+  </head>
+  <body>
+		<br>
+		<br>
+		
+		
+		<div id="status" class="col-md-offset-4 col-md-4"></div>
+
+		<a class='btn btn-info col-md-offset-4 col-md-4' role='button' href='/adm.html'>Voltar para a Administração do Sistema</a>
+
+	
+  </body>
+</html>

@@ -1,0 +1,158 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Cadastro de Usuários</title>
+	
+    
+	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+	
+
+	<link href="css/bootstrap.min.css" rel=stylesheet>
+	
+	
+	<script>
+		$(document).ready(function(){
+		
+				var userName = sessionStorage.getItem("userNameADM");
+				
+				if(userName == null){
+				
+					window.location.href = '/loginadm.html';
+				
+				} else {
+		
+					$.getJSON("/institutions?format=json&jsoncallback=",function(data) {
+						var itemsInst = [];
+					
+						$.each(data, function(i){
+					
+						
+						
+							itemsInst.push("<option value='"+this.institutionName+"'>" + this.institutionName + "</option>");
+						
+						});
+								
+						$("#institution").append(itemsInst);
+					
+					});
+			
+				}
+		
+			$('form').submit(function(e){
+				e.preventDefault();
+				
+				var userName = $('#userName').val();
+				var password = $('#password').val();
+				var name = $('#name').val();
+				var institution = $( "#institution option:selected" ).text();
+				
+				
+				var url = JSON.stringify({"institution":institution,"password":password,"name":name,"userName":userName});
+				
+				
+				
+				$.post("/psychologist", url, function(data){
+						
+						if(data[0].status == 1){
+							window.location.href = '/statuscreatepsychologist.html?success';
+						} else {
+							window.location.href = '/statuscreatepsychologist.html?error';
+						}
+						
+						
+				}, "json");
+			
+			});
+			
+		});
+	</script>
+
+   
+  </head>
+  <body>
+  
+		<nav class="navbar navbar-default navbar-static-top">
+			
+			<div id="navbar" class="navbar-collapse collapse">
+				<ul class="nav navbar-nav">
+					<li><a href="adm.html">Painel de Controle</a></li>
+					<li><a href="createquestion.html">Cadastrar Questão</a></li>
+					<li><a href="listquestions.html">Gerenciar Questões</a></li>
+					<li><a href="managecompetencies.html">Gerenciar Competências</a></li>
+					<li><a href="managecourses.html">Gerenciar Curso</a></li>
+					<li class="active"><a href="createpsychologist.html">Cadastrar Psicóloga</a></li>
+					<li><a href="createadm.html">Cadastrar Funcionário</a></li>
+				</ul>
+          
+				
+        
+			</div>
+		</nav>
+		
+		<br>
+		<br>
+		<form class="form-horizontal" method="post" id="form">
+			<div class="form-group form-group">
+				<label for="inputEmail3" class="col-md-4 control-label">Email(Usuário)</label>
+				<div class="col-md-4">
+					<input required="required" type="email" class="form-control" id="userName" placeholder="Email">
+				</div>
+				<div class="col-md-4">
+					<label for="inputEmail3" class="control-label">Ex: joao@gmail.com</label>
+				</div>
+			</div>
+			
+			
+			
+			<div class="form-group">
+				<label for="inputPassword3" class="col-md-4 control-label">Senha</label>
+				<div class="col-md-4">
+					<input required="required" type="password" class="form-control" id="password" placeholder="Senha">
+				</div>
+				<div class="col-md-4">
+					<label for="inputEmail3" class="control-label">Ex: 12345</label>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label for="" class="col-md-4 control-label">Nome</label>
+				<div class="col-md-4">
+					<input required="required" type="" class="form-control" id="name" placeholder="Nome">
+				</div>
+				<div class="col-md-4">
+					<label for="inputEmail3" class="control-label">Ex: João Bertoti</label>
+				</div>
+				
+			</div>
+			
+
+			
+			<div class="form-group">
+                <label for="inputPassword3" class="col-md-4 control-label">Escolha sua FATEC</label>
+				<div class="col-md-4">
+					<select required="required" id="institution" class="input-large form-control">
+						<option value="" selected="selected">Escolha a FATEC</option>
+					</select>
+				</div>
+				<div class="col-md-4">
+					<label for="inputEmail3" class="control-label">Ex: FATEC SJC</label>
+				</div>
+				
+            </div>
+			
+			
+			
+			<div class="form-group">
+				<div class="col-sm-offset-2 col-sm-10">
+					<button id="createUser" type="submit" class="btn btn-primary col-md-offset-5">Cadastrar Psicóloga</button>
+				</div>
+			</div>
+			
+		</form>
+
+		
+
+	
+  </body>
+</html>

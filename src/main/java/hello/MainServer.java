@@ -26,8 +26,13 @@ public class MainServer {
         }
         port(port);
 
-		initializeModel();
+		//initializeModel();
 		
+        model.addADM(new ADM("adm@adm.com", "12345", "João", "Fatec"));
+        Institution fatecsjc = new Institution("fatecsjc");
+		Institution fatecmarilia = new Institution("fatecmarilia");
+		model.addInstitution(fatecsjc);
+		model.addInstitution(fatecmarilia);
 		
 		staticFileLocation("/static");
 		
@@ -54,6 +59,8 @@ public class MainServer {
 		controller.setNewCourse();
 		controller.deleteCourse();
 		controller.loginADM();
+		controller.setPsychologist();
+		controller.setADM();
     }
 	
     public static void initializeModel(){
@@ -121,7 +128,7 @@ public class MainServer {
 		Answer answersD = new Answer(4, "Interface Orgânica", competencies4);
 		answers.add(answersD);
 		
-		model.addQuestion(new Question(2, "https://www.youtube.com/embed/5t1FPSvpDko", "video", "Qual é este tipo de Interação Humano Computador", answers));
+		model.addQuestion(new Question(2, "http://giulianobertoti.github.io/assets/img/user.png", "video", "Qual é este tipo de Interação Humano Computador", answers));
 	
 		
 		//adicionando a questao 2

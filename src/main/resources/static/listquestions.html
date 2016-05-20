@@ -13,21 +13,29 @@
 	<script>
 		$(document).ready(function(){
 		
-			$.getJSON("/questions?format=json&jsoncallback=",function(data) {
-					var items = [];
+				var userName = sessionStorage.getItem("userNameADM");
+				
+				if(userName == null){
+				
+					window.location.href = '/loginadm.html';
+				
+				} else {
+		
+					$.getJSON("/questions?format=json&jsoncallback=",function(data) {
+						var items = [];
 					
-					$.each(data, function(i){
+						$.each(data, function(i){
 					
 						
 						
-						items.push("<tr> <td>"+ this.number +"</td> <td>"+ this.question + "</td> <td><a class='btn btn-info' role='button' href='/questionedit.html?"+this.number+"'>Editar</a>  <a class='btn btn-danger' role='button' href='/deletequestion.html?"+this.number+"'>Deletar</a></td> </tr>");
+							items.push("<tr> <td>"+ this.number +"</td> <td>"+ this.question + "</td> <td><a class='btn btn-info' role='button' href='/questionedit.html?"+this.number+"'>Editar</a>  <a class='btn btn-danger' role='button' href='/deletequestion.html?"+this.number+"'>Deletar</a></td> </tr>");
 						
-					});
+						});
 								
-					$("#dataRows").append(items);
+						$("#dataRows").append(items);
 					
-			});
-			
+					});
+				}
 			
 		});
 		
@@ -38,7 +46,23 @@
   </head>
   <body>
   
-		
+		<nav class="navbar navbar-default navbar-static-top">
+			
+			<div id="navbar" class="navbar-collapse collapse">
+				<ul class="nav navbar-nav">
+					<li><a href="adm.html">Painel de Controle</a></li>
+					<li><a href="createquestion.html">Cadastrar Questão</a></li>
+					<li class="active"><a href="listquestions.html">Gerenciar Questões</a></li>
+					<li><a href="managecompetencies.html">Gerenciar Competências</a></li>
+					<li><a href="managecourses.html">Gerenciar Curso</a></li>
+					<li><a href="createpsychologist.html">Cadastrar Psicóloga</a></li>
+					<li><a href="createadm.html">Cadastrar Funcionário</a></li>
+				</ul>
+          
+				
+        
+			</div>
+		</nav>	
 		
 		
 		<table class="table table-bordered"> 

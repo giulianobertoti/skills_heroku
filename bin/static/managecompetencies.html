@@ -14,22 +14,30 @@
 	<script>
 		$(document).ready(function(){
 			
-			$.getJSON("/competencies?format=json&jsoncallback=",function(data) {
+				var userName = sessionStorage.getItem("userNameADM");
+				
+				if(userName == null){
+				
+					window.location.href = '/loginadm.html';
+				
+				} else {
 			
-				var itemsCompetencies = [];
+					$.getJSON("/competencies?format=json&jsoncallback=",function(data) {
+			
+						var itemsCompetencies = [];
 					
-					$.each(data, function(i){
+							$.each(data, function(i){
 					
 						
 						
-						itemsCompetencies.push("<tr> <td>"+ this.competency +"</td> <td><button class='btn btn-danger' role='button' onclick='deleteCompetency( \""+this.competency+"\" )'>Deletar</button></td> </tr>");
+								itemsCompetencies.push("<tr> <td>"+ this.competency +"</td> <td><button class='btn btn-danger' role='button' onclick='deleteCompetency( \""+this.competency+"\" )'>Deletar</button></td> </tr>");
 						
-					});
+							});
 								
-					$("#dataRows").append(itemsCompetencies);
+							$("#dataRows").append(itemsCompetencies);
 					
-			});
-			
+					});
+				}
 			
 			$('form').submit(function(e){
 			
@@ -69,6 +77,24 @@
    
   </head>
   <body>
+  
+	<nav class="navbar navbar-default navbar-static-top">
+			
+			<div id="navbar" class="navbar-collapse collapse">
+				<ul class="nav navbar-nav">
+					<li><a href="adm.html">Painel de Controle</a></li>
+					<li><a href="createquestion.html">Cadastrar Questão</a></li>
+					<li><a href="listquestions.html">Gerenciar Questões</a></li>
+					<li class="active"><a href="managecompetencies.html">Gerenciar Competências</a></li>
+					<li><a href="managecourses.html">Gerenciar Curso</a></li>
+					<li><a href="createpsychologist.html">Cadastrar Psicóloga</a></li>
+					<li><a href="createadm.html">Cadastrar Funcionário</a></li>
+				</ul>
+          
+				
+        
+			</div>
+	</nav>	
 		
 	<br>
 	<br>

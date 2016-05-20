@@ -1200,4 +1200,135 @@ public class REST{
          
     }
 		
+		
+		public void setPsychologist(){
+			
+			post("/psychologist", new Route() {
+				@Override
+	            public Object handle(final Request request, final Response response){
+		        	
+		           response.header("Access-Control-Allow-Origin", "*");
+
+		           Gson gson = new Gson();
+		           
+		           String json = request.body();
+		           
+		           
+		           
+		           Psychologist psychologist = gson.fromJson(json, Psychologist.class);
+		           
+		           
+		           
+	         	    
+	         	   try {
+		            	
+		            		boolean status = model.addPsychologist(psychologist);
+		            		
+		            		if(status){
+		            			
+		            			JSONArray jsonResult = new JSONArray();
+			 	         	    JSONObject jsonObj = new JSONObject();
+			     
+				        		jsonObj.put("status", 1);
+				        		
+				        		
+				             	jsonResult.put(jsonObj);
+				             	
+				             	
+				             	
+				             	return jsonResult;
+		            		}
+		            		
+		            		
+		            		
+		            	
+		            	
+		            	
+		             	
+		        		} catch (JSONException e) {
+		        				
+		        			e.printStackTrace();
+		        		}
+	         	    
+	         	    JSONArray jsonResult = new JSONArray();
+	         	    JSONObject jsonObj = new JSONObject();
+	         	   	
+	         	    jsonObj.put("status", 0);
+	        		
+	        		
+	             	jsonResult.put(jsonObj);
+	             	
+	             	return jsonResult;
+	         	   
+	         	   
+		        	
+			   }
+			});     
+		}
+		
+		public void setADM(){
+			
+			post("/adm", new Route() {
+				@Override
+	            public Object handle(final Request request, final Response response){
+		        	
+		           response.header("Access-Control-Allow-Origin", "*");
+
+		           Gson gson = new Gson();
+		           
+		           String json = request.body();
+		           
+		           
+		           
+		           ADM adm = gson.fromJson(json, ADM.class);
+		           
+		           
+		           
+	         	    
+	         	   try {
+		            	
+		            		boolean status = model.addADM(adm);
+		            		
+		            		if(status){
+		            			
+		            			JSONArray jsonResult = new JSONArray();
+			 	         	    JSONObject jsonObj = new JSONObject();
+			     
+				        		jsonObj.put("status", 1);
+				        		
+				        		
+				             	jsonResult.put(jsonObj);
+				             	
+				             	
+				             	
+				             	return jsonResult;
+		            		}
+		            		
+		            		
+		            		
+		            	
+		            	
+		            	
+		             	
+		        		} catch (JSONException e) {
+		        				
+		        			e.printStackTrace();
+		        		}
+	         	    
+	         	    JSONArray jsonResult = new JSONArray();
+	         	    JSONObject jsonObj = new JSONObject();
+	         	   	
+	         	    jsonObj.put("status", 0);
+	        		
+	        		
+	             	jsonResult.put(jsonObj);
+	             	
+	             	return jsonResult;
+	         	   
+	         	   
+		        	
+			   }
+			});     
+		}
+		
 }
