@@ -695,15 +695,20 @@ public class REST{
 		
 		post("/question/", new Route() {
 			@Override
-            public Object handle(final Request request, final Response response){
+            public Object handle(final Request request, final Response response) throws UnsupportedEncodingException{
 	        	
 	           response.header("Access-Control-Allow-Origin", "*");
 
 	           Gson gson = new Gson();
 	           
-	           String json = request.body();
+	           String data = request.body();
+	           
+	           byte text[] = data.getBytes("ISO-8859-1");
+	           String value = new String(text, "UTF-8");
+	           
+	           
 	        	
-	           Question question = gson.fromJson(json, Question.class);
+	           Question question = gson.fromJson(value, Question.class);
 	           
 	           
 	           

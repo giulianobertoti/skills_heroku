@@ -12,7 +12,7 @@ import java.util.List;
 
 public class MainServer {
 
-	static Model model = new Model();
+	final static Model model = new Model();
 
     public static void main(String[] args) {
 

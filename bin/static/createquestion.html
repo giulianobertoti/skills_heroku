@@ -109,7 +109,7 @@
 				
 				var url = JSON.stringify({"question":question,"answers":[answer1, answer2, answer3, answer4],"introduction":introduction,"introductionMediaType":introductionMediaType});
 				
-				alert(url);
+				//alert(url);
 				
 				$.post("/question/?format=json&jsoncallback=", url, function(data){
 						
@@ -172,7 +172,7 @@
 					<input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="video"> Video
 				</label>
 				<label class="radio-inline">
-					<input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="audio"> Audio
+					<input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="audio"> Imagem
 				</label>
 			</div>
 			<label class="col-md-4 control-label">ex: Video</label>
