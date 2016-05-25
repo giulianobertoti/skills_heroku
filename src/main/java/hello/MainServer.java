@@ -26,13 +26,11 @@ public class MainServer {
         }
         port(port);
 
-		//initializeModel();
 		
-        model.addADM(new ADM("adm@adm.com", "12345", "João", "Fatec"));
-        Institution fatecsjc = new Institution("fatecsjc");
-		Institution fatecmarilia = new Institution("fatecmarilia");
-		model.addInstitution(fatecsjc);
-		model.addInstitution(fatecmarilia);
+        
+        initializeModel();
+		
+        
 		
 		staticFileLocation("/static");
 		
@@ -65,8 +63,13 @@ public class MainServer {
 	
     public static void initializeModel(){
 		
-		Institution fatecsjc = new Institution("fatecsjc");
+    	model.addADM(new ADM("adm@adm.com", "12345", "João", "Fatec"));
+        Institution fatecsjc = new Institution("fatecsjc");
 		Institution fatecmarilia = new Institution("fatecmarilia");
+		model.addInstitution(fatecsjc);
+		model.addInstitution(fatecmarilia);
+    	
+		
 		fatecsjc.addCourse("bd");
 		fatecsjc.addCourse("ads");
 		
